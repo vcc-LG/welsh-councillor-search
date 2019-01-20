@@ -16,7 +16,16 @@ I then emailed the [Welsh Local Government Authority](https://www.wlga.gov.uk/) 
 * They do not hold data broken down by who represents which ward.
 * (From the WLGA Data Protection Officer): The only way of collecting this information is for an individual to contact each local authority to ascertain the accurate and up to date information they hold.
 
-So, a little disheartening and surprising. 
+So, a little disheartening and quite surprising. The WLGA had page scrapers to periodically collect data, but it was probably out of date? And the data itself didn't even collect the ward name, without which the data is almost unusable? 
+
+I asked around on the [Cardiff Developer Slack](cardiffdev.herokuapp.com) and was pointed in the direction of the [Democracy Club](https://democracyclub.org.uk/) by a friendly user who worked for [mySociety](https://www.mysociety.org/). On the Democracy Club's [GitHub profile](https://github.com/DemocracyClub) is a repo called [LGSF](https://github.com/DemocracyClub/LGSF) which stands for Local Government Scraper Framework, which is described as a set of scrapers of local government websites, but most of the Python files generally seem to take the format of:
+
+```
+from lgsf.scrapers.councillors import ModGovCouncillorScraper
+
+class Scraper(ModGovCouncillorScraper):
+    base_url = "http://cardiff.moderngov.co.uk"
+```
 
 ## Available APIs
 
