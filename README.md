@@ -1,8 +1,12 @@
 # Introduction
 
-A few weeks ago I was asked on the [Cardiff Sustainibility Slack](https://suscardiffslack.herokuapp.com/) whether there was a central location on which to search for Welsh councillor information. I had a look around and found that while there were individual council pages which listed their councillors (e.g. [here](http://cardiff.moderngov.co.uk/mgMemberIndex.aspx?FN=ALPHA&VW=LIST&PIC=0)), there was no single location where I could search _all_ councillors by, say, party or ward.
+A few weeks ago I was asked on the [Cardiff Sustainibility Slack](https://suscardiffslack.herokuapp.com/) whether there was a central location on which to search for Welsh councillor information. I had a look around and found that while there were individual council pages which listed their councillors (e.g. [here](http://cardiff.moderngov.co.uk/mgMemberIndex.aspx?FN=ALPHA&VW=LIST&PIC=0)), there was no single location where I could search _all_ councillors by, say, party or ward. 
 
-I set about asking around if anyone had any information on whether there was a site I'd overlooked and, if not, if there was a specific reason why the data wasn't collated. Presumably there was a database or Excel spreadsheet sitting somewhere just waiting to be opened up to the public.
+I first considered tackling the problem by writing page scrapers for the individual council sites, but with a total of 22 (I think) councils in Wales this felt like a very time consuming approach. Plus page scrapers are often fragile, with even small layout changes on the page causing erroneous or absent data. 
+
+I then thought that the data could be crowdsourced into a giant Google Sheet: delegating a few wards to lots of people to populate the spreadsheet by hand. However, whenever there was an election or change in council membership the Sheet would need repopulating by hand which would require a level of commitment from its contributors which was probably unrealistic. 
+
+So I set about asking around if anyone had any information on whether there was a site I'd overlooked and, if not, if there was a specific reason why the data wasn't collated. Presumably there was a database or Excel spreadsheet sitting somewhere just waiting to be opened up to the public.
 
 I tweeted the Welsh Assembly ([@AssemblyWales](https://twitter.com/AssemblyWales)) to ask if a central location existed and received this reply:
 
@@ -27,7 +31,22 @@ class Scraper(ModGovCouncillorScraper):
     base_url = "http://cardiff.moderngov.co.uk"
 ```
 
+which clearly wasn't scraping pages from the Cardiff council website but consuming an API. A contributor to the repo, [symroe](https://github.com/symroe), had a clearer look at the endpoints of the API in his [CouncillorData repo](https://github.com/symroe/CouncillorData), which included:
+
+* GetCouncillorsByPostcode
+* GetCouncillorsByWard
+* GetCouncillorsByWardId
+
+found at `[domain]/mgWebService.asmx/[endpoint_name]`, e.g. [http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard](http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard). 
+
+
+
 ## Available APIs
+
+So how well covered are the wards within the [eight Welsh counties](https://en.wikipedia.org/wiki/List_of_electoral_wards_in_Wales) by the APIs listed in the [LGSF repo](https://github.com/DemocracyClub/LGSF/tree/master/scrapers) and in the [CouncillorData repo](https://github.com/symroe/CouncillorData/blob/master/urls.txt)?
+
+
+
 
 ## Consuming APIs 
 
