@@ -31,7 +31,9 @@ class Scraper(ModGovCouncillorScraper):
     base_url = "http://cardiff.moderngov.co.uk"
 ```
 
-which clearly wasn't scraping pages from the Cardiff council website but consuming an API. A contributor to the repo, [symroe](https://github.com/symroe), had a clearer look at the endpoints of the API in his [CouncillorData repo](https://github.com/symroe/CouncillorData), which included:
+which clearly wasn't scraping pages from the Cardiff council website but consuming an API. The API framework's [website](https://www.moderngov.co.uk/) doesn't seem to go into detail about the specific case for open government data, but clearly this product is in common usage, and is available on the gov.uk [Digital Marketplace](https://www.digitalmarketplace.service.gov.uk/g-cloud/services/364588144872148). 
+
+A contributor to the repo, [symroe](https://github.com/symroe), had a clearer look at the endpoints of the API in his [CouncillorData repo](https://github.com/symroe/CouncillorData), which included:
 
 * GetCouncillorsByPostcode
 * GetCouncillorsByWard
@@ -42,7 +44,7 @@ found at `[domain]/mgWebService.asmx/[endpoint_name]`, e.g. [http://cardiff.mode
 
 ## Available APIs
 
-So how well covered are the wards within the [eight Welsh counties](https://en.wikipedia.org/wiki/List_of_electoral_wards_in_Wales) by the APIs listed in the [LGSF repo](https://github.com/DemocracyClub/LGSF/tree/master/scrapers) and in the [CouncillorData repo](https://github.com/symroe/CouncillorData/blob/master/urls.txt)?
+So how well covered are the wards within the [eight Welsh counties](https://en.wikipedia.org/wiki/List_of_electoral_wards_in_Wales) by the APIs listed in the [LGSF repo](https://github.com/DemocracyClub/LGSF/tree/master/scrapers) and in the [CouncillorData repo](https://github.com/symroe/CouncillorData/blob/master/urls.txt)? 
 
 | Council        | Has API?           | URL  |
 | ------------- |:-------------:| -----:|
@@ -64,15 +66,40 @@ So how well covered are the wards within the [eight Welsh counties](https://en.w
 | Swansea     | Yes| democracy.swansea.gov.uk |
 | Merthyr Tydfil     | Yes| democracy.merthyr.gov.uk |
 | Neath Port Talbot     | Yes| democracy.npt.gov.uk |
-| Ceredigion    | Yes| democracy.npt.gov.uk |
-| Neath Port Talbot     | No| - |
+| Ceredigion    | No| -|
 | Blaenau Gwent     | No| -|
 | Rhondda Cynon Taf     | No| - |
 | Vale of Glamorgan    | No| - |
 
+I contacted the four outstanding councils that seemingly did not use the moderngov.* or democracy.* domains for open data APIs. 
+
+* Ceredigion
+>"Ceredigion County Council does not have an API at present.  There are no immediate plans to introduce one for this area but we will be investigating how to supply more of our information via OpenData in the future and this may well be included."
+
+* Blaenau Gwent 
+>"I have been advised that unfortunately we do not currently offer this data in relation to Council Members in the required format. However, the authority will be introducing the modern.gov framework at some point in the near future."
+
+* Rhondda Cynon Taf
+Email sent 16/1/19, no response as of 21/1/19. 
+
+* Vale of Glamorgan
+Email sent on 21/1/19.
+
+Still, writing page scrapers for 4 councils (assuming Rhondda Cynon Taf and Vale of Glamorgan councils aren't hiding an API somewhere) is significantly less arduous than for 22.
+
+## Consuming APIs into (more) useful data
+
+Each of the APIs above seems to use the same framework despite variety in domains (moderngov.\*, democracy.\*, democratiaeth.\*, democratic.\*). The API is SOAP and we can consume it in any number of ways, but I chose a Node.js app using the [request](https://www.npmjs.com/package/request) and [xml2js](https://www.npmjs.com/package/xml2js) npm packages. The end goal here is to make a site where I can browse and search through all of the Welsh councillor data, so collating the data from all of the council's APIs into a searchable database is the core of the application. 
+
+I also wanted to use some tools I'd heard about but never used, namely AWS Lambda and ElasticSearch. Seeing as that was all AWS-based I decided to do the whole thing within the AWS ecosystem:
+
+- Code hosted in CodeCommit
+- Development in Cloud9 IDE
+- DynamoDb to store transformed data
+- ElasticSearch for searching the data
+- Lambda functions to consume APIs, create and write documents into the Db, and syncing data with ElasticSearch
 
 
-## Consuming APIs 
 
 ## Creating a table in DynamoDB
 
