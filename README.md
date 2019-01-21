@@ -40,11 +40,35 @@ which clearly wasn't scraping pages from the Cardiff council website but consumi
 found at `[domain]/mgWebService.asmx/[endpoint_name]`, e.g. [http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard](http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard). 
 
 
-
 ## Available APIs
 
 So how well covered are the wards within the [eight Welsh counties](https://en.wikipedia.org/wiki/List_of_electoral_wards_in_Wales) by the APIs listed in the [LGSF repo](https://github.com/DemocracyClub/LGSF/tree/master/scrapers) and in the [CouncillorData repo](https://github.com/symroe/CouncillorData/blob/master/urls.txt)?
 
+| Council        | Has API?           | URL  |
+| ------------- |:-------------:| -----:|
+| Conwy     | Yes| modgoveng.conwy.gov.uk |
+| Denbighshire      | Yes      |   moderngov.denbighshire.gov.uk |
+| Flintshire | Yes     |    cyfarfodyddpwyllgor.siryfflint.gov.uk |
+| Wrexham     | Yes| moderngov.wrexham.gov.uk |
+| Carmarthenshire     | Yes| democracy.carmarthenshire.gov.wales |
+| Pembrokeshire     | Yes| mgenglish.pembrokeshire.gov.uk|
+| Caerphilly     | Yes| democracy.caerphilly.gov.uk|
+| Monmouthshire     | Yes| democracy.monmouthshire.gov.uk|
+| Newport     | Yes| democracy.newport.gov.uk |
+| Torfaen     | Yes| moderngov.torfaen.gov.uk |
+| Gwynedd     | Yes| democracy.cyngor.gwynedd.gov.uk |
+| Ynys Mon     | Yes| democratiaeth.ynysmon.gov.uk |
+| Bridgend     | Yes| democratic.bridgend.gov.uk |
+| Powys     | Yes| powys.moderngov.co.uk|
+| Cardiff     | Yes| cardiff.moderngov.co.uk |
+| Swansea     | Yes| democracy.swansea.gov.uk |
+| Merthyr Tydfil     | Yes| democracy.merthyr.gov.uk |
+| Neath Port Talbot     | Yes| democracy.npt.gov.uk |
+| Ceredigion    | Yes| democracy.npt.gov.uk |
+| Neath Port Talbot     | No| - |
+| Blaenau Gwent     | No| -|
+| Rhondda Cynon Taf     | No| - |
+| Vale of Glamorgan    | No| - |
 
 
 
