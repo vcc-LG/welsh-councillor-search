@@ -1,3 +1,11 @@
+1. [ Introduction. ](#intro)
+1. [ Available APIs. ](#apis)
+1. [ Consuming APIs. ](#consume)
+1. [ Database. ](#db)
+1. [ ElasticSearch. ](#es)
+1. [ Front end. ](#fe)
+
+<a name="intro"></a>
 # Introduction
 
 A few weeks ago I was asked on the [Cardiff Sustainibility Slack](https://suscardiffslack.herokuapp.com/) whether there was a central location on which to search for Welsh councillor information. I had a look around and found that while there were individual council pages which listed their councillors (e.g. [here](http://cardiff.moderngov.co.uk/mgMemberIndex.aspx?FN=ALPHA&VW=LIST&PIC=0)), there was no single location where I could search _all_ councillors by, say, party or ward. 
@@ -41,7 +49,7 @@ A contributor to the repo, [symroe](https://github.com/symroe), had a clearer lo
 
 found at `[domain]/mgWebService.asmx/[endpoint_name]`, e.g. [http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard](http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard). 
 
-
+<a name="apis"></a>
 ## Available APIs
 
 So how well covered are the wards within the [eight Welsh counties](https://en.wikipedia.org/wiki/List_of_electoral_wards_in_Wales) by the APIs listed in the [LGSF repo](https://github.com/DemocracyClub/LGSF/tree/master/scrapers) and in the [CouncillorData repo](https://github.com/symroe/CouncillorData/blob/master/urls.txt)? 
@@ -87,7 +95,8 @@ Email sent on 21/1/19.
 
 Still, writing page scrapers for 4 councils (assuming Rhondda Cynon Taf and Vale of Glamorgan councils aren't hiding an API somewhere) is significantly less arduous than for 22.
 
-## Consuming APIs into (more) useful data
+<a name="consume"></a>
+## Consuming APIs
 
 Each of the APIs above seems to use the same framework despite variety in domains (moderngov.\*, democracy.\*, democratiaeth.\*, democratic.\*). The API is SOAP and we can consume it in any number of ways, but I chose a Node.js app using the [request](https://www.npmjs.com/package/request) and [xml2js](https://www.npmjs.com/package/xml2js) npm packages. The end goal here is to make a site where I can browse and search through all of the Welsh councillor data, so collating the data from all of the council's APIs into a searchable database is the core of the application. 
 
@@ -99,15 +108,14 @@ I also wanted to use some tools I'd heard about but never used, namely AWS Lambd
 - ElasticSearch for searching the data
 - Lambda functions to consume APIs, create and write documents into the Db, and syncing data with ElasticSearch
 
+<a name="db"></a>
+## Database
 
+<a name="es"></a>
+## ElasticSearch
 
-## Creating a table in DynamoDB
-
-## Writing to DynamoDB
-
-## Streaming DynamoDB to ElasticSearch
-
-## Creating a front end
+<a name="fe"></a>
+## Front end
 
 
 
