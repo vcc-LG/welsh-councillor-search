@@ -1,6 +1,7 @@
 1. [ Introduction. ](#intro)
 1. [ Available APIs. ](#apis)
-1. [ Consuming APIs. ](#consume)
+1. [ Stack. ](#stack)
+1. [ Lambda functions. ](#lambda)
 1. [ Database. ](#db)
 1. [ ElasticSearch. ](#es)
 1. [ Front end. ](#fe)
@@ -95,8 +96,8 @@ Email sent on 21/1/19.
 
 Still, writing page scrapers for 4 councils (assuming Rhondda Cynon Taf and Vale of Glamorgan councils aren't hiding an API somewhere) is significantly less arduous than for 22.
 
-<a name="consume"></a>
-## Consuming APIs
+<a name="stack"></a>
+## Stack
 
 Each of the APIs above seems to use the same framework despite variety in domains (moderngov.\*, democracy.\*, democratiaeth.\*, democratic.\*). The API is SOAP and we can consume it in any number of ways, but I chose a Node.js app using the [request](https://www.npmjs.com/package/request) and [xml2js](https://www.npmjs.com/package/xml2js) npm packages. The end goal here is to make a site where I can browse and search through all of the Welsh councillor data, so collating the data from all of the council's APIs into a searchable database is the core of the application. 
 
@@ -107,6 +108,16 @@ I also wanted to use some tools I'd heard about but never used, namely AWS Lambd
 - DynamoDb to store transformed data
 - ElasticSearch for searching the data
 - Lambda functions to consume APIs, create and write documents into the Db, and syncing data with ElasticSearch
+
+I created an AWS account and I've kept everything within the limits of the Free Tier. I even set up a billing alert for anything over $1 because I've heard some horror stories about PaaS bills accidentally getting out of hand. I also created an IAM user, which is AWS's user administration system, which controls the components of the stack, with a role featuring the appropriate rights needed for the various components of the stack.
+
+<a name="lambda"></a>
+## Lambda functions
+
+The first thing I did was create a Cloud9 environment, which is AWS's cloud-based IDE. The only reason I chose this over local development was because I was swapping laptops between daytime (Windows) and evening (Mac) and didn't want the hassle of maintaining two development environments. I've found Cloud9 to be quite cramped, but I do enjoy how quickly I can create new Lambda functions using the UI instead of memorizing commands to do things locally. 
+
+Within my environment I created a new Lambda function using the empty Node.js template. The code for the function can be found in this repo under `lambdas\consumeAPI.js`. 
+
 
 <a name="db"></a>
 ## Database
