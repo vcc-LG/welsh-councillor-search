@@ -2,8 +2,6 @@
 1. [ Available APIs. ](#apis)
 1. [ Stack. ](#stack)
 1. [ Lambda functions. ](#lambda)
-1. [ Database. ](#db)
-1. [ ElasticSearch. ](#es)
 1. [ Front end. ](#fe)
 
 <a name="intro"></a>
@@ -114,16 +112,17 @@ I created an AWS account and I've kept everything within the limits of the Free 
 <a name="lambda"></a>
 ## Lambda functions
 
-The first thing I did was create a Cloud9 environment, which is AWS's cloud-based IDE. The only reason I chose this over local development was because I was swapping laptops between daytime (Windows) and evening (Mac) and didn't want the hassle of maintaining two development environments. I've found Cloud9 to be quite cramped, but I do enjoy how quickly I can create new Lambda functions using the UI instead of memorizing commands to do things locally. 
+The first thing I did was create a Cloud9 environment, which is AWS's cloud-based IDE. The only reason I chose this over local development was because I was swapping laptops between daytime (Windows) and evening (Mac) and didn't want the hassle of maintaining two development environments. I've found Cloud9 to be quite cramped but I do enjoy how quickly I can create new Lambda functions using the UI instead of memorizing commands to do things locally. 
 
-Within my environment I created a new Lambda function using the empty Node.js template. The code for the function can be found in this repo under `lambdas\consumeAPI.js`. 
+### Create database
 
+Within my environment I created a new Lambda function using the empty Node.js template. This function creates a DynamoDb table. Even though it's a NoSQL database, the createTable function still requires inputting the primary key attributes and its data types. I chose to create an integer ID as a primary key with the councillor's name as a secondary index, according to the [AWS DynamoDb Lambda tutorial](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-examples-using-tables.html). The code is in this repo under `lambdas\createDb.js`. Running the function if the table already exists will just result in nothing happening.
 
-<a name="db"></a>
-## Database
+### Consume APIs and write to Db
 
-<a name="es"></a>
-## ElasticSearch
+The code for the function can be found in this repo under `lambdas\consumeAPI.js`. When the function is run it 
+
+### Sync to ElasticSearch
 
 <a name="fe"></a>
 ## Front end
