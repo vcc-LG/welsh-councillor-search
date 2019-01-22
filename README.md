@@ -120,7 +120,9 @@ Within my environment I created a new Lambda function using the empty Node.js te
 
 ### Consume APIs and write to Db
 
-The code for the function can be found in this repo under `lambdas\consumeAPI.js`. When the function is run it 
+The code for the function can be found in this repo under `lambdas\consumeAPI.js`. When the function is run it writes to the table created by `createDb.js`. There is some validation going on in the function which I wrote to cope with missing data or data that was structured differently between APIs:
+
+- 
 
 ### Sync to ElasticSearch
 
