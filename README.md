@@ -1,10 +1,3 @@
-1. [ Introduction. ](#intro)
-1. [ Available APIs. ](#apis)
-1. [ Stack. ](#stack)
-1. [ Lambda functions. ](#lambda)
-1. [ Front end. ](#fe)
-
-<a name="intro"></a>
 # Introduction
 
 A few weeks ago I was asked on the [Cardiff Sustainibility Slack](https://suscardiffslack.herokuapp.com/) whether there was a central location on which to search for Welsh councillor information. I had a look around and found that while there were individual council pages which listed their councillors (e.g. [here](http://cardiff.moderngov.co.uk/mgMemberIndex.aspx?FN=ALPHA&VW=LIST&PIC=0)), there was no single location where I could search _all_ councillors by, say, party or ward. 
@@ -27,7 +20,7 @@ I then emailed the [Welsh Local Government Authority](https://www.wlga.gov.uk/) 
 * They do not hold data broken down by who represents which ward.
 * (From the WLGA Data Protection Officer): The only way of collecting this information is for an individual to contact each local authority to ascertain the accurate and up to date information they hold.
 
-So, a little disheartening and quite surprising. The WLGA had page scrapers to periodically collect data, but it was probably out of date? And the data itself didn't even collect the ward name, without which the data is almost unusable? 
+So, a little disheartening and quite surprising. The WLGA had page scrapers to periodically collect data, but it was probably out of date, and the data itself didn't even collect the ward name, without which the data is not exactly helpful.
 
 I asked around on the [Cardiff Developer Slack](cardiffdev.herokuapp.com) and was pointed in the direction of the [Democracy Club](https://democracyclub.org.uk/) by a friendly user who worked for [mySociety](https://www.mysociety.org/). On the Democracy Club's [GitHub profile](https://github.com/DemocracyClub) is a repo called [LGSF](https://github.com/DemocracyClub/LGSF) which stands for Local Government Scraper Framework, which is described as a set of scrapers of local government websites, but most of the Python files generally seem to take the format of:
 
@@ -48,8 +41,18 @@ A contributor to the repo, [symroe](https://github.com/symroe), had a clearer lo
 
 found at `[domain]/mgWebService.asmx/[endpoint_name]`, e.g. [http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard](http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard). 
 
-<a name="apis"></a>
-## Available APIs
+I was interested in who maintained the API, so I emailed Cardiff Council and learned that:
+
+- Modern.Gov produced the API, however the data it displays is pulled from the Cardiff Council Modern.Gov system which is maintained by the Democratic Services department, ensuring the data is up to date.
+- The API itself is not actively maintained. 
+
+I also asked why the API wasn't promoted anywhere on the Council website, to which I didn't receive a direct response but:
+
+>In terms of your suggestion regarding promoting the API on the main Council webpage, I have written to colleagues in FOI/ICT as they have responsibility for this.  Democratic Services have no objection to promoting the API as you suggest.
+
+which was a nice bit of news to end the week.
+
+# Available APIs
 
 So how well covered are the wards within the [eight Welsh counties](https://en.wikipedia.org/wiki/List_of_electoral_wards_in_Wales) by the APIs listed in the [LGSF repo](https://github.com/DemocracyClub/LGSF/tree/master/scrapers) and in the [CouncillorData repo](https://github.com/symroe/CouncillorData/blob/master/urls.txt)? 
 
@@ -87,17 +90,18 @@ I contacted the four outstanding councils that seemingly did not use the moderng
 >"I have been advised that unfortunately we do not currently offer this data in relation to Council Members in the required format. However, the authority will be introducing the modern.gov framework at some point in the near future."
 
 * Rhondda Cynon Taf
-Email sent 16/1/19, no response as of 21/1/19. 
+Email sent 16/1/19, no response as of 6/2/19. 
 
 * Vale of Glamorgan
-Email sent on 21/1/19.
+Contact form sent on 21/1/19, no response as of 6/2/19.  
 
 Still, writing page scrapers for 4 councils (assuming Rhondda Cynon Taf and Vale of Glamorgan councils aren't hiding an API somewhere) is significantly less arduous than for 22.
 
-<a name="stack"></a>
-## Stack
+# Stack
 
-Each of the APIs above seems to use the same framework despite variety in domains (moderngov.\*, democracy.\*, democratiaeth.\*, democratic.\*). The API is SOAP and we can consume it in any number of ways, but I chose a Node.js app using the [request](https://www.npmjs.com/package/request) and [xml2js](https://www.npmjs.com/package/xml2js) npm packages. The end goal here is to make a site where I can browse and search through all of the Welsh councillor data, so collating the data from all of the council's APIs into a searchable database is the core of the application. 
+Each of the APIs above seems to use the same framework despite some variety in domains (moderngov.\*, democracy.\*, democratiaeth.\*, democratic.\*). The API is SOAP and we can consume it in any number of ways, but I chose a Node.js app using the [request](https://www.npmjs.com/package/request) and [xml2js](https://www.npmjs.com/package/xml2js) npm packages. 
+
+The end goal here is the site presented here in Glitch where you can browse and search through all of the Welsh councillor data, so collating the data from all of the council's APIs into a searchable database is the core of the application. 
 
 I also wanted to use some tools I'd heard about but never used, namely AWS Lambda and ElasticSearch. Seeing as that was all AWS-based I decided to do the whole thing within the AWS ecosystem:
 
@@ -105,29 +109,30 @@ I also wanted to use some tools I'd heard about but never used, namely AWS Lambd
 - Development in Cloud9 IDE
 - DynamoDb to store transformed data
 - ElasticSearch for searching the data
-- Lambda functions to consume APIs, create and write documents into the Db, and syncing data with ElasticSearch
+- Lambda functions to consume APIs, create and write documents into the Db, and syncing data with ElasticSearch (ES)
+- Front end written in React with Node/Express back end
+
+ wanted to use [ReactiveSearch](https://opensource.appbase.io/reactivesearch/) for the UI components on the search page, but these repeatedly failed to connect directly to my AWS ES cluster. After reading that the issue might be a requirement for a reverse proxy in front of the cluster, I decided instead to try [appbase.io](https://appbase.io/) for my ES hosting, primarily because the [tutorial](https://codeburst.io/how-to-build-an-e-commerce-search-ui-with-react-and-elasticsearch-a581c823b2c3) I was following used it. In the end this approach was successful.
 
 I created an AWS account and I've kept everything within the limits of the Free Tier. I even set up a billing alert for anything over $1 because I've heard some horror stories about PaaS bills accidentally getting out of hand. I also created an IAM user, which is AWS's user administration system, which controls the components of the stack, with a role featuring the appropriate rights needed for the various components of the stack.
 
-<a name="lambda"></a>
 ## Lambda functions
 
-The first thing I did was create a Cloud9 environment, which is AWS's cloud-based IDE. The only reason I chose this over local development was because I was swapping laptops between daytime (Windows) and evening (Mac) and didn't want the hassle of maintaining two development environments. I've found Cloud9 to be quite cramped but I do enjoy how quickly I can create new Lambda functions using the UI instead of memorizing commands to do things locally. 
+The first thing I did was create a Cloud9 environment, which is AWS's cloud-based IDE. The only reason I chose this over local development was because I was swapping laptops between daytime (Windows) and evening (Mac) and didn't want the hassle of maintaining two development environments. I've found Cloud9 to be quite cramped but I do enjoy how quickly I can create and deploy new Lambda functions using the UI instead of memorizing commands to do things locally. 
 
-### Create database
+I made separate Lambda functions to:
 
-Within my environment I created a new Lambda function using the empty Node.js template. This function creates a DynamoDb table. Even though it's a NoSQL database, the createTable function still requires inputting the primary key attributes and its data types. I chose to create an integer ID as a primary key with the councillor's name as a secondary index, according to the [AWS DynamoDb Lambda tutorial](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-examples-using-tables.html). The code is in this repo under `lambdas\createDb.js`. Running the function if the table already exists will just result in nothing happening.
+- Create a DynamoDb table (Node.js)
+- Populate the table by hitting each of the above APIs at the `GetCouncillorsByWard` endpoint in turn, restructure the returned data into JSON and write to the table (Node.js)
+- When a new record is inserted into the table, trigger a function to PUT the record into an appbase.io (free) app.
 
-### Consume APIs and write to Db
+# To do
 
-The code for the function can be found in this repo under `lambdas\consumeAPI.js`. When the function is run it writes to the table created by `createDb.js`. There is some validation going on in the function which I wrote to cope with missing data or data that was structured differently between APIs:
-
-- 
-
-### Sync to ElasticSearch
-
-<a name="fe"></a>
-## Front end
+- Set the table populate function to run on a sensible schedule, clearing out all records before writing to account for council members leaving.
+- Write some sanity tests to show that the number of records returned from the moderngov API calls is equal to the number of records written into the DynamoDb table and into appbase.io.
+- Write page scrapers for the councils which don't use moderngov and include them in the populate table lambda function.
+- Improve the front end to include some basic filtering (e.g. by party, council etc.)
+- Create some statistics from the data and display in another page (e.g. break down numbers by party, years in post)
 
 
 
