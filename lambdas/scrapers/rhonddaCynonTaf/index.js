@@ -4,7 +4,11 @@ var crypto = require('crypto');
 var base_url = 'https://www.rctcbc.gov.uk/EN/Council/CouncillorsCommitteesandMeetings/Councillors/Councillors.aspx';
 var base_domain = 'https://www.rctcbc.gov.uk';
 var appbase_url = 'https://{credentials}@scalr.api.appbase.io/{appname}/{type}/';
-
+const Bottleneck = require("bottleneck");
+const limiter = new Bottleneck({
+    maxConcurrent: 1,
+    minTime: 200
+});
 function capitalize_Words(str)
 {
  return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
