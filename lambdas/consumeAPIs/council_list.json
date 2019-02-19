@@ -1,0 +1,76 @@
+{
+    "council_list": [
+        {
+            "url": "http://cardiff.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Cardiff"
+        },
+        {
+            "url": "http://modgoveng.conwy.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Conwy"
+        },
+        {
+            "url": "http://moderngov.denbighshire.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Denbighshire"
+        },
+        {
+            "url": "http://cyfarfodyddpwyllgor.siryfflint.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Flintshire"
+        },
+        {
+            "url": "http://moderngov.wrexham.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Wrexham"
+        },
+        {
+            "url": "http://democracy.carmarthenshire.gov.wales/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Carmarthenshire"
+        },
+        {
+            "url": "http://mgenglish.pembrokeshire.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Pembrokeshire"
+        },
+        {
+            "url": "http://democracy.caerphilly.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Caerphilly"
+        },
+        {
+            "url": "http://democracy.monmouthshire.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Monmouthshire"
+        },
+        {
+            "url": "http://democracy.newport.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Newport"
+        },
+        {
+            "url": "http://moderngov.torfaen.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Torfaen"
+        },
+        {
+            "url": "http://democracy.cyngor.gwynedd.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Gwynedd"
+        },
+        {
+            "url": "http://democratiaeth.ynysmon.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Ynys Mon"
+        },
+        {
+            "url": "http://democratic.bridgend.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Bridgend"
+        },
+        {
+            "url": "http://powys.moderngov.co.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Powys"
+        },
+        {
+            "url": "http://democracy.swansea.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Swansea"
+        },
+        {
+            "url": "http://democracy.merthyr.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Merthyr Tydfil"
+        },
+        {
+            "url": "https://democracy.npt.gov.uk/mgWebService.asmx/GetCouncillorsByWard",
+            "council_name": "Neath Port Talbot"
+        }
+    ]
+}
